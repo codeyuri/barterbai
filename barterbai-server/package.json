@@ -1,0 +1,29 @@
+{
+  "name": "barterbai",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Barter Bai - Barter App built with React and Nodejs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "server": "node ./bin/www",
+    "client": "npm start --prefix ../barterbai-client",
+    "dev": "nodemon ./bin/www",
+    "start": "concurrently \"npm run dev\" \"npm run client\""
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "~1.4.4",
+    "cors": "^2.8.5",
+    "debug": "~2.6.9",
+    "dotenv": "^8.2.0",
+    "express": "~4.16.1",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "~1.9.1",
+    "rethinkdb": "^2.3.3",
+    "socket.io": "^2.3.0"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0",
+    "nodemon": "^2.0.4"
+  }
+}

@@ -1,0 +1,56 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  color: #555;
+  font-family: "Raleway", sans-serif;
+}
+
+a {
+  text-decoration: none;
+  color: #d35a5a;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+a:hover {
+  color: #f77c7c;
+}
+ul,
+li {
+  list-style: none;
+}
+button {
+  border: 0;
+  padding: 12px 15px;
+  background: #f77c7c;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+  font-size: 15px;
+  cursor: pointer;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+button:hover {
+  background: #d35a5a;
+  cursor: pointer;
+}
+input {
+  border: 0;
+  background: #ebebeb;
+  padding: 10px 15px;
+  margin-bottom: 10px;
+}
+label {
+  margin-bottom: 10px;
+}
+
+.container {
+  width: 1920px;
+  max-width: 100%;
+  margin: 0 auto;
+  position: relative;
+}
