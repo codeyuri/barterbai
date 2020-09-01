@@ -1,0 +1,21 @@
+.home_div main {
+  width: calc(100% - 250px);
+}
+
+.alert {
+  position: absolute;
+  top: 30px;
+  right: 0;
+}
+
+.spanerror {
+  color: #f77c7c;
+  text-align: right;
+  margin-top: 20px;
+  height: 25px;
+}
+
+.spanerror.additem {
+  margin-top: 0;
+  text-align: left;
+}

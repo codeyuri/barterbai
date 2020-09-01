@@ -1,4 +1,3 @@
-const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 let Users = require("../models/Users");
@@ -13,23 +12,18 @@ exports.registerUser = async (req, res) => {
 
   try {
     // if (username != "" && password != "" && con_pass != "") {
-    if (!username || !password || !con_pass)
-      throw "Registration failed, empty fields!";
+    if (!username || !password || !con_pass) throw "Failed, empty fields!";
 
-    if (await user.userExists(username))
-      throw "Registration failed, username exists!";
-    if (password !== con_pass)
-      throw "Registration failed, password don't match!";
+    if (await user.userExists(username)) throw "Failed, username exists!";
+    if (password !== con_pass) throw "Failed, password don't match!";
 
-    const hashed_password = await bcrypt.hash(password, await bcrypt.genSalt());
-
-    const result = await user.registerUser(username, hashed_password);
+    const result = await user.registerUser(username, password);
 
     console.log(`\n@@@ registerUser`, result);
     res.json(result);
   } catch (e) {
     console.log(`\n@@@ registerUser`, { success: false, message: e });
-    res.json({ success: false, message: e });
+    res.status(404).send({ success: false, message: e });
   }
 };
 
@@ -43,21 +37,9 @@ exports.loginUser = async (req, res) => {
   try {
     if (!username || !password) throw "Login failed, empty fields!";
 
-    if (!(await user.userExists(username)))
-      throw "Login failed, user does not exist.";
+    const login_user = await user.loginUser(username);
 
-    const {
-      id,
-      password: hashed_password,
-      is_online,
-    } = await user.getUserByName(username);
-
-    const validate_user = await bcrypt.compare(password, hashed_password);
-    if (!validate_user) throw "Login failed, invalid password!";
-
-    if (is_online) throw "Login failed, user is currently online!";
-
-    await user.loginUpdateStatus(id);
+    await user.loginUpdateStatus(login_user.id);
 
     const token = await jwt.sign(
       {
@@ -67,31 +49,40 @@ exports.loginUser = async (req, res) => {
       { expiresIn: 3600 }
     );
 
-    const has_token = await user.userHasToken(id);
+    const has_token = await user.userHasToken(login_user.id);
 
     if (!has_token) {
-      await user.loginAddToken(id, token);
+      await user.loginAddToken(login_user.id, token);
     } else {
-      await user.loginUpdateToken(id, token);
+      await user.loginUpdateToken(login_user.id, token);
     }
 
-    console.log(`\n@@@ loginUser`, {
-      id,
-      username,
-      password: hashed_password,
-      token,
-    });
+    // console.log(`\n@@@ loginUser`, login_user);
 
     res.json({
       success: true,
       message: "Login success!",
-      data: {
-        token,
-        username,
-      },
+      data: { token: token, ...login_user },
     });
   } catch (e) {
     console.log(`\n@@@ loginUser`, { success: false, message: e });
+    res.status(401).send({ success: false, message: e });
+  }
+};
+
+// @route   POST /user/logout/:id
+// @desc    Logout a user
+// @access  Public
+exports.logoutUser = async (req, res) => {
+  const user = new Users();
+
+  try {
+    const get_id = await user.getUserIdByToken(req.body.token);
+
+    const logout_user = await user.logoutUpdateStatus(get_id.user_id);
+
+    res.json(logout_user);
+  } catch (e) {
     res.json({ success: false, message: e });
   }
 };

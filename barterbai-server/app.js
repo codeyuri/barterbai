@@ -6,6 +6,8 @@ var cors = require("cors");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var itemListRouter = require("./routes/itemList");
+var itemTransactionsRouter = require("./routes/itemTransactions");
 var itemSetterRouter = require("./routes/itemSetter");
 var itemGetterRouter = require("./routes/itemGetter");
 var category = require("./routes/category");
@@ -21,6 +23,8 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/itemlist", itemListRouter);
+app.use("/itemtransactions", itemTransactionsRouter);
 app.use("/itemsetter", itemSetterRouter);
 app.use("/itemgetter", itemGetterRouter);
 app.use("/category", category);

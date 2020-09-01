@@ -126,6 +126,24 @@ async function connect() {
     .forEach((rtable) => r.tableCreate(rtable))
     .run(connection);
 
+  const rdb_item_categories = process.env.DB_ITEM_CATEGORIES.split(" ");
+
+  await r
+    .table("item_category")
+    .isEmpty()
+    .do(function (categoryExists) {
+      return r.branch(
+        categoryExists,
+        r.table("item_category").insert(
+          rdb_item_categories.map((category) => {
+            return { category };
+          })
+        ),
+        { categories_created: 0 }
+      );
+    })
+    .run(connection);
+
   // create index for item_category table
   await r
     .table("item_category")
@@ -139,78 +157,188 @@ async function connect() {
       );
     })
     .run(connection);
+
+  await r
+    .table("item_list")
+    .indexList()
+    .contains("category")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_list").indexCreate("category")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_list")
+    .indexList()
+    .contains("setter_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_list").indexCreate("setter_id")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_list")
+    .indexList()
+    .contains("user_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_list").indexCreate("user_id")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_setter")
+    .indexList()
+    .contains("category")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_setter").indexCreate("category")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_setter")
+    .indexList()
+    .contains("user_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_setter").indexCreate("user_id")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_setter")
+    .indexList()
+    .contains("is_private")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_setter").indexCreate("is_private")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_setter")
+    .indexList()
+    .contains("item")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_setter").indexCreate("item")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_getter_list")
+    .indexList()
+    .contains("user_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_getter_list").indexCreate("user_id")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_getter_list")
+    .indexList()
+    .contains("getter_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_getter_list").indexCreate("getter_id")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_getter")
+    .indexList()
+    .contains("user_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_getter").indexCreate("user_id")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("item_transaction")
+    .indexList()
+    .contains("user_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("item_transaction").indexCreate("user_id")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("users")
+    .indexList()
+    .contains("username")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("users").indexCreate("username")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("tokens")
+    .indexList()
+    .contains("token")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("tokens").indexCreate("token")
+      );
+    })
+    .run(connection);
+
+  await r
+    .table("tokens")
+    .indexList()
+    .contains("user_id")
+    .do(function (indexExists) {
+      return r.branch(
+        indexExists,
+        { index_created: 0 },
+        r.table("tokens").indexCreate("user_id")
+      );
+    })
+    .run(connection);
 }
 
 connect();
-
-// await r
-//   .tableList()
-//   .contains("users")
-//   .do(function (tableExists) {
-//     return r.branch(
-//       tableExists,
-//       { table_created: 0 },
-//       r.tableCreate("users")
-//     );
-//   })
-//   .run(connection);
-
-// await r
-//   .tableList()
-//   .contains("tokens")
-//   .do(function (tableExists) {
-//     return r.branch(
-//       tableExists,
-//       { table_created: 0 },
-//       r.tableCreate("tokens")
-//     );
-//   })
-//   .run(connection);
-
-// await r
-//   .tableList()
-//   .contains("item_transaction")
-//   .do(function (tableExists) {
-//     return r.branch(
-//       tableExists,
-//       { table_created: 0 },
-//       r.tableCreate("item_transaction")
-//     );
-//   })
-//   .run(connection);
-
-// await r
-//   .tableList()
-//   .contains("item_setter")
-//   .do(function (tableExists) {
-//     return r.branch(
-//       tableExists,
-//       { table_created: 0 },
-//       r.tableCreate("item_setter")
-//     );
-//   })
-//   .run(connection);
-
-// await r
-//   .tableList()
-//   .contains("item_getter")
-//   .do(function (tableExists) {
-//     return r.branch(
-//       tableExists,
-//       { table_created: 0 },
-//       r.tableCreate("item_getter")
-//     );
-//   })
-//   .run(connection);
-
-// await r
-//   .tableList()
-//   .contains("item_category")
-//   .do(function (tableExists) {
-//     return r.branch(
-//       tableExists,
-//       { table_created: 0 },
-//       r.tableCreate("item_category")
-//     );
-//   })
-//   .run(connection);

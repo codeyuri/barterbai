@@ -33,24 +33,48 @@ button {
   cursor: pointer;
   -webkit-transition: all 0.3s linear;
   transition: all 0.3s linear;
+  border: 1px solid transparent;
 }
 button:hover {
   background: #d35a5a;
   cursor: pointer;
 }
-input {
+input,
+select {
   border: 0;
   background: #ebebeb;
-  padding: 10px 15px;
-  margin-bottom: 10px;
+  padding: 12px 15px;
+  font-size: 15px;
+  color: #666;
+  border: 1px solid transparent;
+}
+textarea {
+  resize: none;
+  min-height: 261px;
+  padding: 12px 15px;
 }
 label {
   margin-bottom: 10px;
 }
-
+td {
+  word-break: break-word;
+}
 .container {
   width: 1920px;
   max-width: 100%;
   margin: 0 auto;
   position: relative;
 }
+
+.style_error {
+  border: 1px solid red;
+}
+
+.is_disabled {
+  color: #bbb;
+  font-style: italic;
+}
+/* 
+.is_disabled_header {
+  border-top: 5px solid #f77c7c;
+} */

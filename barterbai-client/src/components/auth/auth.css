@@ -34,7 +34,7 @@
 .home_right::before {
   content: "";
   width: 110%;
-  height: 100vh;
+  height: 100%;
   position: absolute;
   left: -100%;
   background: #f77c7c;
@@ -55,13 +55,17 @@
   font-weight: 400;
 }
 
+.home_input input {
+  margin-bottom: 10px;
+}
+
 .home_input input[name="con_pass"]::placeholder {
   letter-spacing: 2px;
   text-align: center;
 }
 
 .home_input_btm {
-  margin-top: 50px;
+  margin-top: 25px;
   text-align: right;
   line-height: 28px;
 }

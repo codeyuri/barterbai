@@ -1,43 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
 
 import "./auth.css";
 
+import { loginAction } from "../../redux/store/users/usersActions";
+
 const Login = (props) => {
-  const { setIsAuthenticated } = props;
-  const initialState = {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  const [state, setState] = useState({
     username: "",
     password: "",
-  };
-  const [state, setState] = useState(initialState);
+  });
+
+  // run once
+  useEffect(() => {
+    console.log("nirender login");
+    user.message = "";
+  }, [user.message]);
 
   const handleChange = (ev) => {
     setState({ ...state, [ev.target.name]: ev.target.value });
   };
 
-  const handleLogin = async (ev) => {
+  const handleLogin = async () => {
     try {
-      await axios.post("http://localhost:3000/users/login", {
-        ...state,
-        [ev.target.name]: ev.target.value,
-      });
-
-      setState(initialState);
-
-      setIsAuthenticated(true);
-
-      props.history.push("/");
+      await dispatch(loginAction(state));
     } catch (e) {
       console.log(`@@@ handleLogin`, e);
     }
   };
 
   return (
-    <div className="home_div">
+    <div className="home_div login">
       <div className="home_left">
         <h1>Barter Bai?</h1>
-        <h2>{process.env.REACT_APP_TEST}</h2>
       </div>
       <div className="home_right">
         <div className="home_input">
@@ -51,7 +50,7 @@ const Login = (props) => {
           />
           <label htmlFor="username">Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             value={state.password}
             onChange={handleChange}
@@ -59,6 +58,7 @@ const Login = (props) => {
           <button type="submit" onClick={handleLogin}>
             Login
           </button>
+          <span className="spanerror">{user.message}</span>
           <div className="home_input_btm">
             <p>Don't have an account yet?</p>
             <Link to="/register">Register here!</Link>

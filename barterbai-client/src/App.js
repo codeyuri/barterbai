@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useSelector } from "react-redux";
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,43 +7,28 @@ import {
   Redirect,
 } from "react-router-dom";
 
-import Main from "./components/Main";
+import Home from "./components/home/Home";
 import Login from "./components/auth/Login";
 import Register from "./components/auth/Register";
 
 const App = () => {
-  let [isAuthenticated, setIsAuthenticated] = useState(false);
+  const user = useSelector((state) => state.user);
 
   return (
     <Router>
       <div className="container">
         <Switch>
-          <Route
-            path="/"
-            exact
-            render={() =>
-              !isAuthenticated ? <Redirect to="/login" /> : <Main />
-            }
-          />
-          <Route
-            path="/login"
-            exact
-            render={(props) =>
-              !isAuthenticated ? (
-                <Login setIsAuthenticated={setIsAuthenticated} />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
-          <Route
-            path="/register"
-            exact
-            render={(props) =>
-              !isAuthenticated ? <Register /> : <Redirect to="/" />
-            }
-          />
-          <Route render={() => <Redirect to="/" />} />
+          <Route path="/" exact>
+            {!user.isAuthenticated ? <Login /> : <Home />}
+          </Route>
+          <Route path="/login">
+            {!user.isAuthenticated ? <Login /> : <Redirect to="/" />}
+          </Route>
+          <Route path="/register">
+            {!user.isAuthenticated ? <Register /> : <Redirect to="/" />}
+          </Route>
+          {/* <Route render={() => <Redirect to="/" />} /> */}
+          <Route>{!user.isAuthenticated ? <Login /> : <Home />}</Route>
         </Switch>
       </div>
     </Router>

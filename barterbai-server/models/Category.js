@@ -6,6 +6,24 @@ class Category {
     this.data = data;
   }
 
+  async getCategories() {
+    try {
+      const categories = await category_collections
+        .orderBy("category")
+        .coerceTo("array")
+        .run(connection);
+
+      // console.log(`category model`, categories);
+      if (categories) {
+        return categories;
+      } else {
+        throw "No item categories...";
+      }
+    } catch (e) {
+      throw e;
+    }
+  }
+
   async addCategory(category) {
     try {
       const category_exists = await category_collections

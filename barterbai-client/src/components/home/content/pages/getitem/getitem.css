@@ -1,0 +1,48 @@
+.get_item_right {
+  width: 65% !important;
+}
+
+.get_item_top {
+  display: flex;
+  justify-content: space-between;
+}
+
+.get_item_top > div {
+  width: 49%;
+}
+
+.get_item_top .add_div_2 ul {
+  min-height: 140px;
+}
+
+.get_item_right textarea {
+  min-height: 100px !important;
+}
+
+.get_item_top .add_div_2 ul {
+  min-height: 198px;
+}
+
+.note {
+  display: flex;
+  justify-content: space-between;
+}
+
+.note textarea {
+  width: 78%;
+  min-height: 0 !important;
+}
+
+.get_item .add_div_2.the_item ul {
+  margin: 0 0 14px;
+  min-height: 320px;
+}
+
+.get_item .add_div_2 ul li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.get_item .add_div_2 ul li span {
+  width: 50%;
+}

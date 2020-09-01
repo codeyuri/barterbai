@@ -1,16 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
-import axios from "axios";
 
 import "./auth.css";
 
+import { registerAction } from "../../redux/store/users/usersActions";
+
 const Register = (props) => {
-  const initialState = {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+
+  const [state, setState] = useState({
     username: "",
     password: "",
     con_pass: "",
-  };
-  const [state, setState] = useState(initialState);
+  });
+
+  // run once
+  useEffect(() => {
+    console.log("nirender register");
+    user.message = "";
+  }, [user.message]);
 
   const handleChange = (ev) => {
     setState({ ...state, [ev.target.name]: ev.target.value });
@@ -18,12 +28,13 @@ const Register = (props) => {
 
   const handleRegister = async (ev) => {
     try {
-      await axios.post("http://localhost:3000/users/register", {
-        ...state,
-        [ev.target.name]: ev.target.value,
-      });
+      await dispatch(registerAction(state));
 
-      setState(initialState);
+      setState({
+        username: "",
+        password: "",
+        con_pass: "",
+      });
 
       props.history.push("/login");
     } catch (e) {
@@ -32,7 +43,7 @@ const Register = (props) => {
   };
 
   return (
-    <div className="home_div">
+    <div className="home_div login">
       <div className="home_left">
         <h1>Barter Bai?</h1>
       </div>
@@ -48,13 +59,13 @@ const Register = (props) => {
           />
           <label htmlFor="username">Password</label>
           <input
-            type="text"
+            type="password"
             name="password"
             value={state.password}
             onChange={handleChange}
           />
           <input
-            type="text"
+            type="password"
             name="con_pass"
             value={state.con_pass}
             placeholder="confirm password"
@@ -63,6 +74,7 @@ const Register = (props) => {
           <button type="submit" onClick={handleRegister}>
             Register
           </button>
+          <span className="spanerror">{user.message}</span>
           <div className="home_input_btm">
             <p>Already have an account?</p>
             <Link to="/">Login here!</Link>

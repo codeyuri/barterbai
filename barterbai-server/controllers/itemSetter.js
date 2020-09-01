@@ -1,23 +1,54 @@
 let ItemSetter = require("../models/ItemSetter");
+let ItemList = require("../models/ItemList");
 
 // @route   POST /itemsetter/add
 // @desc    Add a new item
 // @access  Public
 exports.addItem = async (req, res) => {
-  const item = new ItemSetter(req.body);
+  const item = new ItemSetter();
+  const item_list = new ItemList();
 
-  const { item_list, wishlist } = req.body;
+  // console.log(`ADD ITEM REQ BODY`, req.body);
 
   try {
-    if (!item_list || !wishlist) throw "Add item failed, empty fields!";
+    if (req.body.length <= 0) throw "Add item failed, empty fields!";
 
-    const add_item = await item.addItem();
+    const add_item = await item.addItem(req.body.add_this_to_setter);
 
-    console.log(`\n@@@ addItem`, add_item);
-    res.json(add_item);
+    console.log(`\n@@@ addItem controller`, add_item.data);
+
+    const add_item_list = await item_list.addItemList(
+      add_item.data.id,
+      req.body.item_container
+    );
+
+    console.log(`add_item_list inside itemSetter controller`, add_item_list);
+
+    res.json(add_item_list);
   } catch (e) {
-    console.log(`\n@@@ addItem`, { success: false, message: e });
-    res.json({ success: false, message: e });
+    console.log(`\n@@@ addItem controller`, e);
+    res.status(404).send({ success: false, message: e });
+  }
+};
+
+// @route   UPDATE /itemsetter/status
+// @desc    Update public status of an item
+// @access  Public
+exports.updateViewStatus = async (req, res) => {
+  const item = new ItemSetter();
+
+  console.log(`check this`, req.body);
+
+  try {
+    const update_priv_status = await item.updateViewStatus(
+      req.body.setter_id,
+      req.body.status
+    );
+
+    res.json(update_priv_status);
+  } catch (e) {
+    console.log(`\n@@@ updateViewStatus CONTROLLER failed`, e);
+    res.status(404).send({ success: false, message: e });
   }
 };
 

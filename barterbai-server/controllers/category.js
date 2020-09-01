@@ -1,5 +1,22 @@
 let Category = require("../models/Category");
 
+// @route   GET /category/
+// @desc    Get all categories
+// @access  Public
+exports.getCategories = async (req, res) => {
+  const category = new Category();
+
+  try {
+    const get_cat = await category.getCategories();
+
+    res.json(get_cat);
+  } catch (e) {
+    console.log(`\n@@@ why`, { success: false, message: e });
+    // res.json({ success: false, message: e });
+    res.status(404).send({ success: false, message: e });
+  }
+};
+
 // @route   POST /category/add
 // @desc    Add a new item category
 // @access  Public

@@ -1,0 +1,124 @@
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.1);
+  z-index: 5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-transition: all 0.3s linear;
+  transition: all 0.3s linear;
+}
+
+.modal_con {
+  background: #fff;
+  min-height: 400px;
+  max-height: 400px;
+  width: 600px !important;
+  position: relative;
+  max-width: 95%;
+}
+
+.modal_close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 6;
+  cursor: pointer;
+}
+
+.modal_close span {
+  width: 40px;
+  padding: 10px 15px;
+  background: #f77c7c;
+  color: #fff;
+  display: block;
+}
+
+.modal_body {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 40px;
+}
+
+.modal_body h2 {
+  color: #e35555;
+  font-weight: 400;
+  margin-bottom: 20px;
+  padding: 0;
+}
+
+.modal_text > div {
+  padding: 0 11px;
+  display: flex;
+}
+.modal_text > div b {
+  color: #e86a6a;
+  width: 50%;
+}
+
+.modal_text table {
+  padding: 10px 0 !important;
+}
+.modal_text table td,
+.modal_text table th {
+  padding: 10px;
+}
+
+.modal_text table tr:nth-child(1) th {
+  color: #e86a6a;
+}
+.modal_text table tr:nth-child(even) {
+  background: #e1e1e1;
+}
+
+.modal_text button {
+  width: 300px;
+  max-width: 100%;
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.modal_text thead,
+.modal_text tbody,
+.modal_text tr {
+  display: block;
+}
+
+.modal_text td,
+.modal_text th {
+  display: inline-block;
+  width: 50%;
+}
+
+.modal_text table {
+  max-height: 210px;
+  overflow-y: auto;
+  display: block;
+}
+
+.modal_con.publicstatus {
+  width: 350px !important;
+}
+
+.modal_con.publicstatus .modal_text {
+  margin-top: 100px;
+}
+
+.modal_con.publicstatus .modal_text button {
+  position: relative;
+  bottom: 0;
+  left: 0;
+  transform: none;
+  margin-bottom: 10px;
+}

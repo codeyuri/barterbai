@@ -1,0 +1,57 @@
+INDEXES
+
+item_list - category, setter_id, user_id
+item_setter - category, user_id, item, is_private
+item_category - category
+item_getter - user_id
+item_getter_list - getter_id, user_id
+item_transaction - user_id
+users - username
+tokens - token, user_id
+
+TABLES
+
+users
+id  username
+u1  dan
+u2  amie
+
+item_category
+c1  Goods
+c2  Gadgets
+c3  Appliances
+
+item_setter
+id  user_id     username    is_private  wishlist_holder     date_added
+s1  u2          amie        true        anything            08-30-2020
+s2  u1          dan         false       egg                 08-31-2020
+
+item_list
+id  item        category    setter_id   user_id
+l1  bacon       c1 (Goods)  s1          u2 (amie)
+l2  rice        c1 (Goods)  s1          u2 (amie)
+l3  tv          c3 (Appli)  s2          u1 (dan)
+
+item_getter
+id  user_id     username    setter_id   note                date_added
+g1  u2          amie        s2          kanang nindut       09-01-2020
+g2  u2          amie        s2          lain ni nga offer   09-02-2020  // same item new offer
+g3  u1          dan         s1          anything kaha       09-02-2020
+
+item_getter_list
+id      category    offered_items   getter_id   user_id
+gl1     c2          realme          g1          u2 (amie)
+gl2     c2          samsung g2      g1          u2 (amie)
+gl3     c1          eggs, bacon     g2          u2 (amie)
+
+item_transaction
+id  getter_id   setter_id   is_pending  is_approved
+t1  g1          s2          true        false
+t2  g2          s2          true        false   // same item or new offer
+t3  g3          s1          true        false
+
+ISSUES
+
+1. fix the update status not real time update
+2. get item page, refresh is okay, pero if i manual search ang link balik, kay mawala na ang location state
+
